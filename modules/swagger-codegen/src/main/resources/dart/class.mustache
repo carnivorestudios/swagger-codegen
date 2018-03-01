@@ -1,23 +1,23 @@
 class {{classname}} {
   {{#vars}}{{#description}}/* {{{description}}} */{{/description}}
-  {{{datatype}}} {{name}} = {{{defaultValue}}};
-  {{#allowableValues}}{{#min}} // range from {{min}} to {{max}}{{/min}}//{{^min}}enum {{name}}Enum { {{#values}} {{.}}, {{/values}} };{{/min}}{{/allowableValues}}
+  {{{datatype}}} {{nameInCamelCase}} = {{{defaultValue}}};
+  {{#allowableValues}}{{#min}} // range from {{min}} to {{max}}{{/min}}//{{^min}}enum {{nameInCamelCase}}Enum { {{#values}} {{.}}, {{/values}} };{{/min}}{{/allowableValues}}
   {{/vars}}
   {{classname}}();
 
   @override
   String toString() {
-    return '{{classname}}[{{#vars}}{{name}}=${{name}}, {{/vars}}]';
+    return '{{classname}}[{{#vars}}{{nameInCamelCase}}=${{nameInCamelCase}}, {{/vars}}]';
   }
 
   {{classname}}.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
   {{#vars}}
   {{#isDateTime}}
-    {{name}} = json['{{name}}'] == null ? null : DateTime.parse(json['{{name}}']);
+    {{nameInCamelCase}} = json['{{name}}'] == null ? null : DateTime.parse(json['{{name}}']);
   {{/isDateTime}}
   {{^isDateTime}}
-    {{name}} =
+    {{nameInCamelCase}} =
     {{#complexType}}
         {{#isListContainer}}{{complexType}}.listFromJson(json['{{name}}']){{/isListContainer}}{{^isListContainer}}
         {{#isMapContainer}}{{complexType}}.mapFromJson(json['{{name}}']){{/isMapContainer}}
@@ -31,7 +31,7 @@ class {{classname}} {
   Map<String, dynamic> toJson() {
     return {
     {{#vars}}
-      {{#isDateTime}}'{{name}}': {{name}} == null ? '' : {{name}}.toUtc().toIso8601String(){{^-last}},{{/-last}}{{/isDateTime}}{{^isDateTime}}'{{name}}': {{name}}{{^-last}},{{/-last}}{{/isDateTime}}
+      {{#isDateTime}}'{{nameInCamelCase}}': {{nameInCamelCase}} == null ? '' : {{nameInCamelCase}}.toUtc().toIso8601String(){{^-last}},{{/-last}}{{/isDateTime}}{{^isDateTime}}'{{nameInCamelCase}}': {{nameInCamelCase}}{{^-last}},{{/-last}}{{/isDateTime}}
     {{/vars}}
      };
   }

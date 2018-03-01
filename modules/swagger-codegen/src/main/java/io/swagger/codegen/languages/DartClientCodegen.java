@@ -352,6 +352,15 @@ public class DartClientCodegen extends DefaultCodegen implements CodegenConfig {
 
     @Override
     public Map<String, Object> postProcessModels(Map<String, Object> objs) {
+        List<Object> models = (List<Object>) objs.get("models");
+        for (Object _mo : models) {
+            Map<String, Object> mo = (Map<String, Object>) _mo;
+            CodegenModel cm = (CodegenModel) mo.get("model");
+
+            for (CodegenProperty var : cm.vars) {
+                var.nameInCamelCase = camelize(var.nameInCamelCase, true);
+            }
+        }
         return postProcessModelsEnum(objs);
     }
 
