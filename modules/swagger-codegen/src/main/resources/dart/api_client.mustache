@@ -82,7 +82,8 @@ class ApiClient {
 
     if (targetType == 'String') return json;
 
-    var decodedJson = JSON.decode(json);
+    var utf8json = const Utf8Decoder(allowMalformed: true).convert(json.codeUnits);
+    var decodedJson = JSON.decode(utf8json);
     return _deserialize(decodedJson, targetType);
   }
 
